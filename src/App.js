@@ -1,26 +1,30 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import GoogleMapReact from 'google-map-react';
+import Marker from './components/Marker';
+import DataAlarm from './utils/data_alarm_marker.json';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
+
+const SimpleMap = (props) => {
+    const [center] = useState({lat: -6.2088, lng: 106.8456 });
+    const [zoom] = useState(9);
+    return (
+        <div style={{ height: '100vh', width: '100%' }}>
+        <GoogleMapReact
+          bootstrapURLKeys={{ key: 'AIzaSyBpLE9VWinX09eeTl6dLXtryw6IMAK1SOk' }}
+          defaultCenter={center}
+          defaultZoom={zoom}
         >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+          {DataAlarm.map((el, index)=>
+          <Marker
+            key={index}
+            lat={el.LATITUDE}
+            lng={el.LONGITUDE}
+            siteClass={el.SITECLASS}
+            status={el.prime_status}
+          />)}
+        </GoogleMapReact>
+      </div>
+    );
 }
 
-export default App;
+export default SimpleMap;
